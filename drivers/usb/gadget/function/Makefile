@@ -79,4 +79,5 @@ obj-$(CONFIG_USB_F_ACC)         += usb_f_accessory.o
 usb_f_conn_gadget-y             := f_conn_gadget.o
 obj-$(CONFIG_USB_F_CONN_GADGET) += usb_f_conn_gadget.o
 obj-$(CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE)	+= multi_config.o
-
+usb_f_hid-y                     := f_hid.o
+obj-$(CONFIG_USB_G_ANDROID)     += usb_f_hid.o
