@@ -17,7 +17,7 @@ case $MODEL in
 d2x)
 	case $VARIANT in
 	can|duos|eur|xx)
-		KERNEL_DEFCONFIG=exynos9820-d2x_defconfig
+		KERNEL_DEFCONFIG=nethunter-d2x_defconfig
 		;;
 	*)
 		echo "Unknown variant: $VARIANT"
