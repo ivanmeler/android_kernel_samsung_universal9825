@@ -1,7 +1,7 @@
 #!/bin/bash
 # kernel build script by geiti94 v0.1 (made for s10e/s10/s10/n10/n10+ sources)
 
-export MODEL=d2x
+export MODEL=$1
 export VARIANT=eur
 export ARCH=arm64
 export BUILD_CROSS_COMPILE=$(pwd)/toolchains/aarch64-linux-android-4.9/bin/aarch64-linux-android-
@@ -14,16 +14,27 @@ DTBDIR=$OUTDIR/dtb
 INCDIR=$RDIR/include
 
 case $MODEL in
-d2x)
+d2s)
 	case $VARIANT in
 	can|duos|eur|xx)
-		KERNEL_DEFCONFIG=exynos9820-d2x_defconfig
+		KERNEL_DEFCONFIG=exynos9820-d2s_defconfig
 		;;
 	*)
 		echo "Unknown variant: $VARIANT"
 		exit 1
 		;;
 	esac
+;;
+d1)
+        case $VARIANT in
+        can|duos|eur|xx)
+                KERNEL_DEFCONFIG=exynos9820-d1_defconfig
+                ;;
+        *)
+                echo "Unknown variant: $VARIANT"
+                exit 1
+                ;;
+        esac
 ;;
 *)
 	echo "Unknown device: $MODEL"
@@ -66,7 +77,7 @@ FUNC_BUILD_KERNEL()
 	make -j$BUILD_JOB_NUMBER ARCH=$ARCH \
 			CROSS_COMPILE=$BUILD_CROSS_COMPILE || exit -1
 
-	
+
 	echo ""
 	echo "================================="
 	echo "END   : FUNC_BUILD_KERNEL"
@@ -79,12 +90,12 @@ FUNC_BUILD_RAMDISK()
 	mv $RDIR/arch/$ARCH/boot/Image $RDIR/arch/$ARCH/boot/boot.img-zImage
 
 	case $MODEL in
-	d2x)
+	d2s)
 		case $VARIANT in
 		can|duos|eur|xx)
-			rm -f $RDIR/ramdisk/N976/split_img/boot.img-zImage
+			rm -f $RDIR/ramdisk/N975/split_img/boot.img-zImage
 			mv -f $RDIR/arch/$ARCH/boot/boot.img-zImage $RDIR/ramdisk/N976/split_img/boot.img-zImage
-			cd $RDIR/ramdisk/N976
+			cd $RDIR/ramdisk/N975
 			./repackimg.sh --nosudo
 			echo SEANDROIDENFORCE >> image-new.img
 			;;
@@ -94,6 +105,21 @@ FUNC_BUILD_RAMDISK()
 			;;
 		esac
 	;;
+        d1)
+                case $VARIANT in
+                can|duos|eur|xx)
+                        rm -f $RDIR/ramdisk/N970/split_img/boot.img-zImage
+                        mv -f $RDIR/arch/$ARCH/boot/boot.img-zImage $RDIR/ramdisk/N976/split_img/boot.img-zImage
+                        cd $RDIR/ramdisk/N970
+                        ./repackimg.sh --nosudo
+                        echo SEANDROIDENFORCE >> image-new.img
+                        ;;
+                *)
+                        echo "Unknown variant: $VARIANT"
+                        exit 1
+                        ;;
+                esac
+        ;;
 	*)
 		echo "Unknown device: $MODEL"
 		exit 1
@@ -106,10 +132,10 @@ FUNC_BUILD_ZIP()
 	cd $RDIR/build
 	rm $MODEL-$VARIANT.img
 	case $MODEL in
-	d2x)
+	d2s)
 		case $VARIANT in
 		can|duos|eur|xx)
-			mv -f $RDIR/ramdisk/N976/image-new.img $RDIR/build/$MODEL-$VARIANT.img
+			mv -f $RDIR/ramdisk/N975/image-new.img $RDIR/build/$MODEL-$VARIANT.img
 			;;
 		*)
 			echo "Unknown variant: $VARIANT"
@@ -117,6 +143,17 @@ FUNC_BUILD_ZIP()
 			;;
 		esac
 	;;
+        d1)
+                case $VARIANT in
+                can|duos|eur|xx)
+                        mv -f $RDIR/ramdisk/N970/image-new.img $RDIR/build/$MODEL-$VARIANT.img
+                        ;;
+                *)
+                        echo "Unknown variant: $VARIANT"
+                        exit 1
+                        ;;
+                esac
+        ;;
 	*)
 		echo "Unknown device: $MODEL"
 		exit 1
