@@ -94,7 +94,7 @@ FUNC_BUILD_RAMDISK()
 		case $VARIANT in
 		can|duos|eur|xx)
 			rm -f $RDIR/ramdisk/N975/split_img/boot.img-zImage
-			mv -f $RDIR/arch/$ARCH/boot/boot.img-zImage $RDIR/ramdisk/N976/split_img/boot.img-zImage
+			mv -f $RDIR/arch/$ARCH/boot/boot.img-zImage $RDIR/ramdisk/N975/split_img/boot.img-zImage
 			cd $RDIR/ramdisk/N975
 			./repackimg.sh --nosudo
 			echo SEANDROIDENFORCE >> image-new.img
@@ -109,7 +109,7 @@ FUNC_BUILD_RAMDISK()
                 case $VARIANT in
                 can|duos|eur|xx)
                         rm -f $RDIR/ramdisk/N970/split_img/boot.img-zImage
-                        mv -f $RDIR/arch/$ARCH/boot/boot.img-zImage $RDIR/ramdisk/N976/split_img/boot.img-zImage
+                        mv -f $RDIR/arch/$ARCH/boot/boot.img-zImage $RDIR/ramdisk/N970/split_img/boot.img-zImage
                         cd $RDIR/ramdisk/N970
                         ./repackimg.sh --nosudo
                         echo SEANDROIDENFORCE >> image-new.img
